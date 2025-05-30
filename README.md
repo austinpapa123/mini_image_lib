@@ -4,9 +4,10 @@ currently only supports image files in PPM format
 
 /assets folder contains a 2x2 RGB color block "test_input.ppm"
 
-compile and run the program using the following command(g++) or using make command
-
-
+compile and run the program using the following command(g++) or using make command\n
+1. 'g++ -std=c++11 -Wall -Iinclude -o app.exe src/image.cpp main.cpp'
+2. './app'
+3. output file will be under /output
 
 - Using FileHelper.com to test out the PPM file
 
