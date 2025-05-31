@@ -50,3 +50,12 @@ void Image::to_grayscale() {
         data[idx] = data[idx + 1] = data[idx + 2] = gray;
     }
 }
+
+
+
+void Image::invert_colors() {
+    for (int i = 0; i < width * height * 3; ++i) {
+        data[i] = 255 - data[i];
+    }
+}
+

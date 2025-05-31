@@ -25,6 +25,11 @@ public:
     gray = 0.299 * R + 0.587 * G + 0.114 * B; (luma (Y') formula, defined by the ITU-R BT.601 standard for TV signals.)
     */
     void to_grayscale();
+
+
+
+    //Turn every pixel into its opposite color
+    void invert_colors();
 };
 
 #endif // IMAGE_H
