@@ -4,30 +4,30 @@ currently only supports image files in PPM format
 
 A .ppm file in P6 format stores:
 
-A text-based header:
-P6
-width height
-255
-Followed by raw binary RGB data:
+A text-based header:<br />
+P6<br />
+width height<br />
+255<br /><br />
 
-R1 G1 B1  R2 G2 B2  R3 G3 B3  ...
-Each pixel takes up 3 bytes — one each for Red, Green, and Blue, in that exact order.
+Followed by raw binary RGB data:<br />
+R1 G1 B1  R2 G2 B2  R3 G3 B3  ...<br />
+Each pixel takes up 3 bytes — one each for Red, Green, and Blue, in that exact order.<br /><br />
 
 So, for a 2×2 image:
 
-Pixels:      R     G     B
-Pixel 1:     255   0     0      // Red
-Pixel 2:     0     255   0      // Green
-Pixel 3:     0     0     255    // Blue
-Pixel 4:     255   255   255    // White
+Pixels:      R     G     B<br />
+Pixel 1:     255   0     0      // Red<br />
+Pixel 2:     0     255   0      // Green<br />
+Pixel 3:     0     0     255    // Blue<br />
+Pixel 4:     255   255   255    // White<br /><br />
 
 This results in:
 
-std::vector<uint8_t> data = {
-    255, 0, 0,     // Pixel 0 (Top-Left)
-    0, 255, 0,     // Pixel 1 (Top-Right)
-    0, 0, 255,     // Pixel 2 (Bottom-Left)
-    255, 255, 255  // Pixel 3 (Bottom-Right)
+std::vector<uint8_t> data = {<br />
+    255, 0, 0,     // Pixel 0 (Top-Left)<br />
+    0, 255, 0,     // Pixel 1 (Top-Right)<br />
+    0, 0, 255,     // Pixel 2 (Bottom-Left)<br />
+    255, 255, 255  // Pixel 3 (Bottom-Right)<br />
 };
 
 So, if the image is w × h, then:
