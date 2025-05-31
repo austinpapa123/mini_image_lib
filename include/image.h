@@ -28,7 +28,12 @@ public:
 
 
 
-    //Turn every pixel into its opposite color
+    /*
+    Turn every pixel into its opposite color
+    new_R = 255 - R
+    new_G = 255 - G
+    new_B = 255 - B
+    */
     void invert_colors();
 };
 
