@@ -59,3 +59,58 @@ void Image::invert_colors() {
     }
 }
 
+
+
+void Image::box_blur() {
+    std::vector<uint8_t> original = data;
+
+    /**
+     * This function gets a pixel's R/G/B value
+     * It handles edges, so (x+dx) and (y+dy) doesn't go out-of-bounds
+     */
+    auto get = [&](int x, int y, int c) -> uint8_t {  //[&] is the capture clause, so taht we can use width,height,original inside without passing them explicitly
+        // clamp edges (ensures not out-of-bound)
+        x = std::max(0, std::min(width - 1, x));  //if x=-1, clamp to 0, if x=width, clamp to width-1
+        y = std::max(0, std::min(height - 1, y));  //same as above
+        
+        /*
+        * "y*width+x" gives the pixel index
+        * "*3" accounts for 3 color channels per pixel
+        * "+c" indices 0 for R, 1 for G, 2 for B
+        */ 
+        return original[(y * width + x) * 3 + c];
+    };
+
+    for (int y = 0; y < height; ++y) {  //for every row
+        for (int x = 0; x < width; ++x) { //for every column
+
+            /*
+             Each RGB channel is blurred independently
+             R channels are averaged with R values
+             G with G
+             B with B
+
+            pseudocode:
+            
+             for (int c = 0; c < 3; ++c) {
+                sum = sum of channel c for 9 surrounding pixels
+                result = sum / 9
+                assign to pixel's channel c
+            }
+
+            */
+            for (int c = 0; c < 3; ++c) { // for each color channel (R,G,B)
+                int sum = 0;
+                for (int dy = -1; dy <= 1; ++dy) { // for 3x3 neighborhood rows
+                    for (int dx = -1; dx <= 1; ++dx) {  // for 3x3 neighborhood cols
+                        // sum up the surrounding 3x3 neighborhood values
+                        sum += get(x + dx, y + dy, c);
+                    }
+                }
+                data[(y * width + x) * 3 + c] = static_cast<uint8_t>(sum / 9); //average to get the output
+            }
+        }
+    }
+}
+
+

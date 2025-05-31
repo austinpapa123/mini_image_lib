@@ -8,7 +8,7 @@
 class Image {
 public:
     int width = 0, height = 0;
-    std::vector<uint8_t> data; // RGB data
+    std::vector<uint8_t> data; // RGB data, 1D array of interleaved RGB triplets
 
     //reads a binary PPM file
     bool load(const std::string& filename);
@@ -35,6 +35,14 @@ public:
     new_B = 255 - B
     */
     void invert_colors();
+
+
+    /*
+    RGB averaging
+    For each pixel, replaces its value with the average of its neighbors
+    makes images appear softer, like out-of-focus or smoothed
+    */
+    void box_blur();
 };
 
 #endif // IMAGE_H
