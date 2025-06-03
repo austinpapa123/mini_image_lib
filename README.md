@@ -1,6 +1,6 @@
 ### Mini Image Library in C++
 
-currently only supports image files in PPM format
+currently only supports image files in PPM format(raw form, no extra bytes, even comments)
 
 A .ppm file in P6 format stores:
 
