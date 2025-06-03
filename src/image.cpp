@@ -1,7 +1,19 @@
 #include "image.h"
 #include <fstream>
 #include <iostream>
+#include <cmath> // for sqrt
 
+
+//File size check, if raw format without any extra bytes even for commenting
+void debug_file_size(std::ifstream& file, int width, int height) {
+    std::streampos current = file.tellg();
+    file.seekg(0, std::ios::end);
+    std::streampos total = file.tellg();
+    file.seekg(current); // return to previous read position
+
+    std::cout << "Input file size: " << total << " bytes\n";
+    std::cout << "Expected: " << (width * height * 3) << " bytes + header text bytes\n";
+}
 
 bool Image::load(const std::string& filename) {
     std::ifstream file(filename, std::ios::binary);
@@ -20,6 +32,9 @@ bool Image::load(const std::string& filename) {
     
     //"reinterpret_cast<char*>"" tells C++ to treat uint8_t* as a char*, which read() expects
     file.read(reinterpret_cast<char*>(data.data()), data.size());  //Read the binary data into 'data'
+    
+    debug_file_size(file, width, height);
+
     return true;
 }
 
@@ -33,6 +48,8 @@ bool Image::save(const std::string& filename) {
     file << "P6\n" << width << " " << height << "\n255\n"; //write the correct header for P6 format
 
     file.write(reinterpret_cast<char*>(data.data()), data.size()); //Write all the RGB binary data to the file
+
+    
     return true;
 }
 
@@ -114,3 +131,59 @@ void Image::box_blur() {
 }
 
 
+
+
+
+void Image::sobel_edge_detect() {
+    // Step 1: Convert to grayscale first, one channel only no need to deal with R,G,B separately
+    std::vector<uint8_t> gray(width * height);
+    for (int i = 0; i < width * height; ++i) {
+        int idx = i * 3;
+        uint8_t r = data[idx], g = data[idx + 1], b = data[idx + 2];
+        gray[i] = static_cast<uint8_t>(0.299 * r + 0.587 * g + 0.114 * b);
+    }
+
+    // Step 2: Prepare output buffer
+    std::vector<uint8_t> edges(width * height);
+
+    // Step 3: Define Sobel kernels, left-right contrast / top-bottom contrast
+    int Gx[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+    int Gy[3][3] = {
+        {-1, -2, -1},
+        { 0,  0,  0},
+        { 1,  2,  1}
+    };
+
+    // Step 4: Apply Sobel
+    
+    //Looping Order y -> x is conventional in CV and mathces memory layout 'data[(y * width + x) * 3 + c]'
+    for (int y = 1; y < height - 1; ++y) {
+        for (int x = 1; x < width - 1; ++x) {
+            int sumX = 0;
+            int sumY = 0;
+
+            for (int dy = -1; dy <= 1; ++dy) {
+                for (int dx = -1; dx <= 1; ++dx) {
+                    int pixel = gray[(y + dy) * width + (x + dx)];
+                    sumX += Gx[dy + 1][dx + 1] * pixel;
+                    sumY += Gy[dy + 1][dx + 1] * pixel;
+                }
+            }
+            //true magnitude = sqrt(Gx^2 + Gy^2), sqrt() is expensive plus abs(a) + abs(b) is a fast approximation of sqrt(a² + b²)
+            //int magnitude = std::min(255, static_cast<int>(std::sqrt(sumX * sumX + sumY * sumY)));
+            int magnitude = std::min(255, std::abs(sumX) + std::abs(sumY));
+            edges[y * width + x] = static_cast<uint8_t>(magnitude);
+        }
+    }
+
+    // Step 5: Convert to RGB output (grayscale output to R=G=B)
+    for (int i = 0; i < width * height; ++i) {
+        data[i * 3 + 0] = edges[i];
+        data[i * 3 + 1] = edges[i];
+        data[i * 3 + 2] = edges[i];
+    }
+}

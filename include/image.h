@@ -43,6 +43,16 @@ public:
     makes images appear softer, like out-of-focus or smoothed
     */
     void box_blur();
+
+
+    /**
+     * Sobel Edge Detection
+     * 
+     * Highlights edges in an image by detecting sudden changes in brightness
+     * 
+     * We perform grayscale first then sobel kernels calculating result
+     */
+    void sobel_edge_detect();
 };
 
 #endif // IMAGE_H

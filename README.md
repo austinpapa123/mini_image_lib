@@ -34,12 +34,15 @@ So, if the image is w × h, then:
 
 data.size() = width * height * 3
 
-/assets folder contains a 2x2 RGB color block "test_input.ppm"
+/assets folder contains RGB color blocks for testing<br />
+2x2 "test_input.ppm", <br />
+9x9 "test_input_9x9.ppm", <br />
+32x32 "sobel_test_32x32.ppm"<br />
 
 compile and run the program using the following command(g++) or using make command
 1. 'g++ -std=c++11 -Wall -Iinclude -o app.exe src/image.cpp main.cpp'
 2. './app' or ".\app.exe" in win
-3. output file will be under /output
+3. output files will be under /output
 
 - Using FileHelper.com to test out the PPM file
 
@@ -47,6 +50,7 @@ compile and run the program using the following command(g++) or using make comma
 - Grayscale 
 - Invert Colors
 - Box Blur
+- Sobel Edge Detection (use sobel_test_32x32.ppm under /assets to test)
 
 
 

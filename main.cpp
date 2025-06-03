@@ -2,7 +2,8 @@
 
 int main() {
     Image img;
-    if (!img.load("assets/test_input_9x9.ppm")) return 1;
+    //if (!img.load("assets/test_input_9x9.ppm")) return 1;
+    if (!img.load("assets/sobel_test_32x32.ppm")) return 1;
 
     img.to_grayscale();
     img.save("output/gray.ppm");
@@ -12,6 +13,10 @@ int main() {
 
     img.box_blur();
     img.save("output/blurred.ppm");
+
+    img.sobel_edge_detect();
+    img.save("output/edges.ppm");
+
 
 
     return 0;
