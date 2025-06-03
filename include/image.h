@@ -16,6 +16,7 @@ public:
     //writes a binary PPM file
     bool save(const std::string& filename);
 
+
     /*
     Make each pixel's R, G, B values equal using brightness (luminance)
 
@@ -53,6 +54,14 @@ public:
      * We perform grayscale first then sobel kernels calculating result
      */
     void sobel_edge_detect();
+
+    /**
+     * brighten or darken the image, simply increase or decrease a 
+     * certain amount from the RGB channels, remember to clamp to avoid overlow
+     * 
+     */
+    void add_brightness(int amount);  // amount can be negative to darken
+
 };
 
 #endif // IMAGE_H

@@ -3,17 +3,11 @@
 #include <iostream>
 #include <cmath> // for sqrt
 
-
 //File size check, if raw format without any extra bytes even for commenting
-void debug_file_size(std::ifstream& file, int width, int height) {
-    std::streampos current = file.tellg();
-    file.seekg(0, std::ios::end);
-    std::streampos total = file.tellg();
-    file.seekg(current); // return to previous read position
+void debug_file_size(std::ifstream& file, int width, int height);
 
-    std::cout << "Input file size: " << total << " bytes\n";
-    std::cout << "Expected: " << (width * height * 3) << " bytes + header text bytes\n";
-}
+
+
 
 bool Image::load(const std::string& filename) {
     std::ifstream file(filename, std::ios::binary);
@@ -36,6 +30,18 @@ bool Image::load(const std::string& filename) {
     debug_file_size(file, width, height);
 
     return true;
+}
+
+
+
+void debug_file_size(std::ifstream& file, int width, int height) {
+    std::streampos current = file.tellg();
+    file.seekg(0, std::ios::end);
+    std::streampos total = file.tellg();
+    file.seekg(current); // return to previous read position
+
+    std::cout << "Input file size: " << total << " bytes\n";
+    std::cout << "Expected: " << (width * height * 3) << " bytes + header text bytes\n";
 }
 
 
@@ -185,5 +191,14 @@ void Image::sobel_edge_detect() {
         data[i * 3 + 0] = edges[i];
         data[i * 3 + 1] = edges[i];
         data[i * 3 + 2] = edges[i];
+    }    
+}
+
+
+//used int instead of uint8_t to avoid temporary overflow
+void Image::add_brightness(int amount) {
+    for (int i = 0; i < width * height * 3; ++i) {
+        int value = static_cast<int>(data[i]) + amount;
+        data[i] = static_cast<uint8_t>(std::min(255, std::max(0, value)));
     }
 }
