@@ -1,8 +1,8 @@
 #include "image.h"
 
 int main() {
-    Image img;
-    if (!img.load("assets/test_input.ppm")) return 1;
+    //Image img;
+    //if (!img.load("assets/test_input.ppm")) return 1;
     //if (!img.load("assets/test_input_9x9.ppm")) return 1;
     //if (!img.load("assets/sobel_test_32x32.ppm")) return 1;
 
@@ -18,9 +18,13 @@ int main() {
     //img.sobel_edge_detect();
     //img.save("output/edges.ppm");
 
-    img.add_brightness(10);
-    img.save("output/brightened.ppm");
+    //img.add_brightness(10);
+    //img.save("output/brightened.ppm");
 
+    Image img(128, 128);
+    img.draw_line(0, 0, 127, 127, RGB(255, 0, 0));     // Red diagonal
+    img.draw_line(0, 127, 127, 0, RGB(0, 255, 0));     // Green diagonal
+    img.save("output/drawn.ppm");
 
     return 0;
 }

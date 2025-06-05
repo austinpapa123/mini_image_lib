@@ -5,10 +5,28 @@
 #include <vector>
 #include <cstdint>
 
+
+struct RGB {
+    uint8_t r, g, b;
+    RGB(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0) : r(r), g(g), b(b) {}
+};
+
+
 class Image {
 public:
     int width = 0, height = 0;
     std::vector<uint8_t> data; // RGB data, 1D array of interleaved RGB triplets
+
+    Image() {}
+
+    //Constructor for canvas initialization
+    Image(int width, int height) {
+        this->width = width;
+        this->height = height;
+        data.resize(width * height * 3); // allocate RGB space
+    }
+
+    
 
     //reads a binary PPM file
     bool load(const std::string& filename);
@@ -61,6 +79,17 @@ public:
      * 
      */
     void add_brightness(int amount);  // amount can be negative to darken
+
+
+
+    // draw pixel on Image canvas
+    void draw_pixel(int x, int y, RGB color);
+
+
+    //Bresenham's Line Algorithm ,, draw line on canvas
+    void draw_line(int x0, int y0, int x1, int y1, RGB color);
+
+
 
 };
 

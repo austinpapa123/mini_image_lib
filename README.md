@@ -51,6 +51,7 @@ compile and run the program using the following command(g++) or using make comma
 - Invert Colors
 - Box Blur
 - Sobel Edge Detection (use sobel_test_32x32.ppm under /assets to test)
+- Draw lines on canvas (Bresenham's Line Algorithm)
 
 
 

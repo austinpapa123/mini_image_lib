@@ -202,3 +202,31 @@ void Image::add_brightness(int amount) {
         data[i] = static_cast<uint8_t>(std::min(255, std::max(0, value)));
     }
 }
+
+
+
+void Image::draw_pixel(int x, int y, RGB color) {
+    if (x < 0 || x >= width || y < 0 || y >= height) return; // bounds check
+    int idx = (y * width + x) * 3;
+    data[idx] = color.r;
+    data[idx + 1] = color.g;
+    data[idx + 2] = color.b;
+}
+
+
+
+void Image::draw_line(int x0, int y0, int x1, int y1, RGB color) {
+    int dx = std::abs(x1 - x0), dy = std::abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx - dy;
+
+    while (true) {
+        draw_pixel(x0, y0, color);
+        if (x0 == x1 && y0 == y1) break;
+        int e2 = 2 * err;
+        if (e2 > -dy) { err -= dy; x0 += sx; }
+        if (e2 < dx)  { err += dx; y0 += sy; }
+    }
+}
+
