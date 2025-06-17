@@ -21,10 +21,19 @@ int main() {
     //img.add_brightness(10);
     //img.save("output/brightened.ppm");
 
+    //Image img(128, 128);
+    //img.draw_line(0, 0, 127, 127, RGB(255, 0, 0));     // Red diagonal
+    //img.draw_line(0, 127, 127, 0, RGB(0, 255, 0));     // Green diagonal
+    //img.save("output/drawn.ppm");
+
+
     Image img(128, 128);
-    img.draw_line(0, 0, 127, 127, RGB(255, 0, 0));     // Red diagonal
-    img.draw_line(0, 127, 127, 0, RGB(0, 255, 0));     // Green diagonal
-    img.save("output/drawn.ppm");
+    // Draw red circle in the center
+    img.draw_circle(64, 64, 30, RGB(255, 0, 0));
+    // Optional: draw inner green circle
+    img.draw_circle(64, 64, 20, RGB(0, 255, 0));
+    img.save("output/circle.ppm");
+
 
     return 0;
 }

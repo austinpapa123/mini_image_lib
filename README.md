@@ -52,6 +52,11 @@ compile and run the program using the following command(g++) or using make comma
 - Box Blur
 - Sobel Edge Detection (use sobel_test_32x32.ppm under /assets to test)
 - Draw lines on canvas (Bresenham's Line Algorithm)
+- Draw circle
 
 
-
+#### Further Improvement (not implemented yet)
+- adding support for more image file formats e.g. jpg png ...
+- having file checking / parsing  e.g. allow commenting ...
+- having user interface (CLI or Web)  e.g. menu, uploading/downloading ...
+- adding support for more image processing features  e.g. could refer to OpenCV and implement raw version

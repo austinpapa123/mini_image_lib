@@ -73,6 +73,7 @@ public:
      */
     void sobel_edge_detect();
 
+
     /**
      * brighten or darken the image, simply increase or decrease a 
      * certain amount from the RGB channels, remember to clamp to avoid overlow
@@ -89,6 +90,9 @@ public:
     //Bresenham's Line Algorithm ,, draw line on canvas
     void draw_line(int x0, int y0, int x1, int y1, RGB color);
 
+
+    //Bresenham's Circle Algorithm / Midpoint Circle Algorithm  ,, draws an unfilled circle
+    void draw_circle(int cx, int cy, int radius, RGB color);
 
 
 };

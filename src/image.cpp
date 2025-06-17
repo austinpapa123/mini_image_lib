@@ -10,7 +10,7 @@ void debug_file_size(std::ifstream& file, int width, int height);
 
 
 bool Image::load(const std::string& filename) {
-    std::ifstream file(filename, std::ios::binary);
+    std::ifstream file(filename, std::ios::binary); //open file
     if (!file) return false;
 
     std::string header;
@@ -35,10 +35,10 @@ bool Image::load(const std::string& filename) {
 
 
 void debug_file_size(std::ifstream& file, int width, int height) {
-    std::streampos current = file.tellg();
-    file.seekg(0, std::ios::end);
-    std::streampos total = file.tellg();
-    file.seekg(current); // return to previous read position
+    std::streampos current = file.tellg();  // where we are in file
+    file.seekg(0, std::ios::end);   // move to end of file
+    std::streampos total = file.tellg();   // get total size
+    file.seekg(current);   // return to previous read position
 
     std::cout << "Input file size: " << total << " bytes\n";
     std::cout << "Expected: " << (width * height * 3) << " bytes + header text bytes\n";
@@ -91,7 +91,7 @@ void Image::box_blur() {
      * This function gets a pixel's R/G/B value
      * It handles edges, so (x+dx) and (y+dy) doesn't go out-of-bounds
      */
-    auto get = [&](int x, int y, int c) -> uint8_t {  //[&] is the capture clause, so taht we can use width,height,original inside without passing them explicitly
+    auto get = [&](int x, int y, int c) -> uint8_t {  //[&] is the capture clause, so that we can use width,height,original inside without passing them explicitly
         // clamp edges (ensures not out-of-bound)
         x = std::max(0, std::min(width - 1, x));  //if x=-1, clamp to 0, if x=width, clamp to width-1
         y = std::max(0, std::min(height - 1, y));  //same as above
@@ -230,3 +230,32 @@ void Image::draw_line(int x0, int y0, int x1, int y1, RGB color) {
     }
 }
 
+
+
+void Image::draw_circle(int cx, int cy, int radius, RGB color) {
+    int x = 0;
+    int y = radius;
+    int d = 3 - 2 * radius;
+
+    auto plot_circle_points = [&](int xc, int yc, int x, int y) {
+        draw_pixel(xc + x, yc + y, color);
+        draw_pixel(xc - x, yc + y, color);
+        draw_pixel(xc + x, yc - y, color);
+        draw_pixel(xc - x, yc - y, color);
+        draw_pixel(xc + y, yc + x, color);
+        draw_pixel(xc - y, yc + x, color);
+        draw_pixel(xc + y, yc - x, color);
+        draw_pixel(xc - y, yc - x, color);
+    };
+
+    while (y >= x) {
+        plot_circle_points(cx, cy, x, y);
+        ++x;
+        if (d > 0) {
+            --y;
+            d += 4 * (x - y) + 10;
+        } else {
+            d += 4 * x + 6;
+        }
+    }
+}
